@@ -1,23 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import StudentForm from "./Student_form";
+import StudentList from "./Student_List";
+import "./App.css";
 
 function App() {
+  const [learners, setLearners] = useState([]);
+  const [clickCount, setClickCount] = useState(0);
+
+  const registerLearner = async (studentData) => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(studentData), 1000);
+    });
+  };
+ // ADD FUNCTION - VALIDATES AGE AND UPDATES STATE
+  const handleAddLearner = async (student) => {
+    if (student.age < 18) {
+      alert("Only 18+ allowed!");
+      return;
+    }
+
+    const newStudent = await registerLearner(student);
+
+    setLearners((prev) => [...prev, newStudent]);
+    setClickCount((prev) => prev + 1);
+  };
+
+  // DELETE FUNCTION - REMOVES STUDENT BY INDEX
+  const handleDeleteLearner = (index) => {
+    setLearners((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>🎓 Student Manager</h1>
+
+      <StudentForm onAdd={handleAddLearner} />
+
+      <h3>Total Adds: {clickCount}</h3>
+
+      <StudentList
+        learners={learners}
+        onDelete={handleDeleteLearner}
+      />
     </div>
   );
 }
