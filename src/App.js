@@ -6,7 +6,8 @@ import "./App.css";
 function App() {
   const [learners, setLearners] = useState([]);
   const [clickCount, setClickCount] = useState(0);
-
+  
+// MOCK API CALL - SIMULATES STUDENT REGISTRATION
   const registerLearner = async (studentData) => {
     return new Promise((resolve) => {
       setTimeout(() => resolve(studentData), 1000);
